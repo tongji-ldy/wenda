@@ -44,7 +44,7 @@
                                     <div class="expandable entry-body">
                                         <div class="zm-item-vote">
                                             <a class="zm-item-vote-count js-expand js-vote-count" href="javascript:;"
-                                               data-bind-votecount="">${vo.commentCount}</a></div>
+                                               data-bind-votecount="">${vo.followCount}</a></div>
                                         <div class="zm-item-answer-author-info">
                                             <a class="author-link" data-tip="p$b$amuro1230" target="_blank"
                                                href="/user/$!{vo.user.id}">$!{vo.user.name}</a>
@@ -57,7 +57,7 @@
                                         </div>
                                         <div class="zm-item-rich-text expandable js-collapse-body"
                                              data-resourceid="123114" data-action="/answer/content"
-                                             data-author-name="李淼" data-entry-url="/question/19857995/answer/13174385">
+                                             data-author-name="$!{vo.user.name}" data-entry-url="/question/19857995/answer/13174385">
                                             <div class="zh-summary summary clearfix">${vo.question.content}</div>
                                         </div>
                                     </div>
