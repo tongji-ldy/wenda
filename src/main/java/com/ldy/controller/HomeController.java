@@ -1,5 +1,6 @@
 package com.ldy.controller;
 
+import com.ldy.model.HostHolder;
 import com.ldy.model.Question;
 import com.ldy.model.ViewObject;
 import com.ldy.service.QuestionService;
@@ -21,13 +22,14 @@ public class HomeController {
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    QuestionService questionService;
+    private QuestionService questionService;
 
     /**
      * 从首页question中跳转到相关user页面
+     *
      * @param model
      * @param userId
      * @return
@@ -40,6 +42,7 @@ public class HomeController {
 
     /**
      * 首页question显示
+     *
      * @param model
      * @return
      */
@@ -51,6 +54,7 @@ public class HomeController {
 
     /**
      * 从userIndex与index中抽取出来的方法，将每个question与对应的user封装到vos中
+     *
      * @param userId
      * @param offset
      * @param limit
