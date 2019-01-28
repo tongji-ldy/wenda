@@ -16,9 +16,7 @@ import java.util.Date;
 @Aspect
 @Component//与@service类似
 public class LogAspect {
-
     private static final Logger logger = LoggerFactory.getLogger(LogAspect.class);
-
 
     @Before("execution(* com.ldy.controller.*.*(..))")
     public void beforeMethod(JoinPoint joinPoint) {

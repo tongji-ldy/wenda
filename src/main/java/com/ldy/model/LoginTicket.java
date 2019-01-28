@@ -3,12 +3,10 @@ package com.ldy.model;
 import java.util.Date;
 
 public class LoginTicket {
-
     private int id;
     private int userId;
     private Date expired;
-    // 0有效,1无效
-    private int status;
+    private int status;// 0有效,1无效
 
     private String ticket;
 

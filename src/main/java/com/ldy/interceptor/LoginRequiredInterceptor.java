@@ -14,29 +14,21 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 public class LoginRequiredInterceptor implements HandlerInterceptor {
-
-    private final HostHolder hostHolder;
-
     @Autowired
-    public LoginRequiredInterceptor(HostHolder hostHolder) {
-        this.hostHolder = hostHolder;
-    }
-
+    private HostHolder hostHolder;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (hostHolder.getUser() == null) {
-            response.sendRedirect("/reglogin?next=" + request.getRequestURI());
+            response.sendRedirect("/reglogin?next=" + request.getRequestURI());//将原地址信息添加到重定向地址中
         }
         return true;
     }
-
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
     }
-
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {

@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@Service//IOC的实际体现之处
+//IOC的实际体现之处
+@Service
 public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 

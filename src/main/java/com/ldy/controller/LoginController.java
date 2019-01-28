@@ -1,7 +1,6 @@
 package com.ldy.controller;
 
 import com.ldy.service.UserService;
-import com.sun.deploy.net.HttpResponse;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +13,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
+/**
+ * 登录控制器
+ */
 @Controller
 public class LoginController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -21,12 +23,34 @@ public class LoginController {
     @Autowired
     UserService userService;
 
+    /**
+     * 跳转到登录注册界面
+     * @param model
+     * @param next
+     * @return
+     */
+    @RequestMapping(path = {"/reglogin"}, method = {RequestMethod.GET})
+    public String regloginPage(Model model, @RequestParam(value = "next", required = false) String next) {
+        model.addAttribute("next", next);
+        return "login";
+    }
+
+    /**
+     * 注册
+     * @param model
+     * @param username
+     * @param password
+     * @param next
+     * @param response
+     * @return
+     */
     @RequestMapping(path = {"/reg/"}, method = {RequestMethod.POST})
     public String reg(Model model,
                       @RequestParam("username") String username,
                       @RequestParam("password") String password,
-                      @RequestParam(value = "next", required = false) String next,
+                      @RequestParam(value = "next", required = false) String next,//记录要跳回的地址
                       HttpServletResponse response) {
+        /*如果登入该用户具有ticket，则生成cookie给浏览器，并跳回原网页。若没有，则转到登录界面。*/
         try {
             Map<String, String> map = userService.register(username, password);
             if (map.containsKey("ticket")) {
@@ -47,6 +71,16 @@ public class LoginController {
         }
     }
 
+    /**
+     * 登录
+     * @param model
+     * @param username
+     * @param password
+     * @param next
+     * @param remeberme
+     * @param response
+     * @return
+     */
     @RequestMapping(path = {"/login/"}, method = {RequestMethod.POST})
     public String login(Model model, @RequestParam("username") String username,
                         @RequestParam("password") String password,
@@ -74,12 +108,11 @@ public class LoginController {
 
     }
 
-    @RequestMapping(path = {"/reglogin"}, method = {RequestMethod.GET})
-    public String regloginPage(Model model, @RequestParam(value = "next", required = false) String next) {
-        model.addAttribute("next", next);
-        return "login";
-    }
-
+    /**
+     * 登出
+     * @param ticket
+     * @return
+     */
     @RequestMapping(path = {"/logout"}, method = {RequestMethod.GET})
     public String logout(@CookieValue("ticket") String ticket) {
         userService.logout(ticket);

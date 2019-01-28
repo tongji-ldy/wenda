@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-@Mapper//mybatis注解
+//mybatis注解
+@Mapper
 public interface QuestionDAO {
     String TABLE_NAME = " question ";
     String INSERT_FIELDS = " title, content, created_date, user_id, comment_count ";//前后加空格，以免拼接时出错

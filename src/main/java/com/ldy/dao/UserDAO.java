@@ -6,7 +6,8 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Mapper//mybatis注解
+//mybatis注解
+@Mapper
 public interface UserDAO {
     String TABLE_NAME = " user ";
     String INSERT_FIELDS = " name, password, salt, head_url ";//前后加空格，以免拼接时出错

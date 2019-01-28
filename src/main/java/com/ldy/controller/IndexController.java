@@ -4,7 +4,6 @@ import com.ldy.model.User;
 import com.ldy.service.WendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -21,7 +20,7 @@ import java.util.Map;
 public class IndexController {
 
     @Autowired//IOC的实际体现之处
-    WendaService wendaService;
+            WendaService wendaService;
 
     @RequestMapping(path = {"/", "/index"})//指定了两个路径映射
     @ResponseBody//表示返回的是字符串，而不是模板名
@@ -38,7 +37,7 @@ public class IndexController {
         return String.format("Profile Page of %s / %d, t:%d k:%s", groupName, userId, type, key);
     }
 
-    @RequestMapping(path = {"/ftl"}, method = {RequestMethod.GET})
+    @RequestMapping(path = {"/vm"}, method = {RequestMethod.GET})
     public String template(Model model) {
         model.addAttribute("value1", "v1");//给前台需要显示的一个变量赋值
 

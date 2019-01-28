@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service//IOC的实际体现之处
+//IOC的实际体现之处
+@Service
 public class QuestionService {
     @Autowired
     QuestionDAO questionDAO;
