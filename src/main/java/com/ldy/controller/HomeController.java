@@ -36,7 +36,7 @@ public class HomeController {
      * @param userId
      * @return
      */
-    @RequestMapping(path = {"/user/{userId}"}, method = {RequestMethod.GET})
+    @RequestMapping(path = {"/user/{userId}"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String userIndex(Model model, @PathVariable("userId") int userId) {
         model.addAttribute("vos", getQuestions(userId, 0, 10));
         return "index";
@@ -48,7 +48,7 @@ public class HomeController {
      * @param model
      * @return
      */
-    @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET})//指定了两个路径映射
+    @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET, RequestMethod.POST})//指定了两个路径映射
     public String index(Model model) {
         model.addAttribute("vos", getQuestions(0, 0, 10));
         return "index";

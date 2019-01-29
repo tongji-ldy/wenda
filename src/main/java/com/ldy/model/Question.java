@@ -3,7 +3,6 @@ package com.ldy.model;
 import java.util.Date;
 
 public class Question {
-
     private int id;
     private String title;
     private String content;

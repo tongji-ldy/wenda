@@ -1,6 +1,5 @@
 package com.ldy.dao;
 
-import antlr.StringUtils;
 import com.ldy.model.User;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;

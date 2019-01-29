@@ -19,8 +19,10 @@ import java.util.Date;
 public class PassportInterceptor implements HandlerInterceptor {
     @Autowired
     private LoginTicketDAO loginTicketDAO;
+
     @Autowired
     private UserDAO userDAO;
+
     @Autowired
     private HostHolder hostHolder;
 
@@ -44,7 +46,7 @@ public class PassportInterceptor implements HandlerInterceptor {
             }
         }
         if (ticket != null) {
-            LoginTicket loginTicket = loginTicketDAO.selectByTicket(ticket);
+            LoginTicket loginTicket = loginTicketDAO.selectByTicket(ticket);  //??????为什么数据库读的数据不对？？
             if (loginTicket == null || loginTicket.getExpired().before(new Date()) || loginTicket.getStatus() != 0) {//不存在或者过期或状态不为0
                 return true;
             }
