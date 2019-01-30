@@ -1,7 +1,7 @@
 package com.ldy.controller;
 
-import com.ldy.model.HostHolder;
-import com.ldy.model.Question;
+import com.ldy.model.*;
+import com.ldy.service.CommentService;
 import com.ldy.service.QuestionService;
 import com.ldy.service.UserService;
 import com.ldy.utils.WendaUtil;
@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.ldy.utils.WendaUtil.ANONYMOUS_USERID;
 
@@ -28,6 +30,9 @@ public class QuestionController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    CommentService commentService;
 
     @RequestMapping(value = "/question/add", method = {RequestMethod.POST})
     @ResponseBody
@@ -57,10 +62,17 @@ public class QuestionController {
 
     @RequestMapping(value = "/question/{qid}", method = {RequestMethod.GET})
     public String questionDetail(Model model, @PathVariable("qid") int qid) {
-
         Question question = questionService.getById(qid);
         model.addAttribute("question", question);
-        model.addAttribute("user", userService.getUser(question.getUserId()));
+        List<Comment> commentList = commentService.getCommentsByEntity(qid, EntityType.ENTITY_QUESTION);
+        List<ViewObject> comments = new ArrayList<>();//评论单元要展示的内容全部放在这里
+        for (Comment comment : commentList) {
+            ViewObject vo = new ViewObject();
+            vo.set("comment", comment);
+            vo.set("user", userService.getUser(comment.getUserId()));
+            comments.add(vo);
+        }
+        model.addAttribute("comments", comments);
         return "detail";
     }
 }

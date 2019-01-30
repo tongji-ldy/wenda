@@ -106,4 +106,7 @@ public class UserService {
         loginTicketDAO.updateStatus(ticket, 1);
     }
 
+    public User selectByName(String name) {
+        return userDAO.selectByName(name);
+    }
 }
