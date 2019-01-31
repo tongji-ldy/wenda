@@ -2,6 +2,7 @@ package com.ldy.controller;
 
 import com.ldy.model.*;
 import com.ldy.service.CommentService;
+import com.ldy.service.LikeService;
 import com.ldy.service.QuestionService;
 import com.ldy.service.UserService;
 import com.ldy.utils.WendaUtil;
@@ -34,6 +35,9 @@ public class QuestionController {
     @Autowired
     CommentService commentService;
 
+    @Autowired
+    LikeService likeService;
+
     @RequestMapping(value = "/question/add", method = {RequestMethod.POST})
     @ResponseBody
     public String addQuestion(@RequestParam("title") String title,
@@ -46,7 +50,7 @@ public class QuestionController {
             question.setTitle(title);
             if (hostHolder.getUser() == null) {
                 // 这里可以设置一个匿名用户,见wendautil
-                question.setUserId(ANONYMOUS_USERID );
+                question.setUserId(ANONYMOUS_USERID);
                 //return WendaUtil.getJSONString(999);
             } else {
                 question.setUserId(hostHolder.getUser().getId());
@@ -69,6 +73,14 @@ public class QuestionController {
         for (Comment comment : commentList) {
             ViewObject vo = new ViewObject();
             vo.set("comment", comment);
+
+            if (hostHolder.getUser() == null) {
+                vo.set("liked", 0);
+            } else {
+                vo.set("liked", likeService.getLikeStatus(hostHolder.getUser().getId(), EntityType.ENTITY_COMMENT, comment.getId()));
+            }
+            vo.set("likeCount", likeService.getLikeCount(EntityType.ENTITY_COMMENT, comment.getId()));
+
             vo.set("user", userService.getUser(comment.getUserId()));
             comments.add(vo);
         }
