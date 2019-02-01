@@ -6,7 +6,6 @@ import com.ldy.model.HostHolder;
 import com.ldy.service.CommentService;
 import com.ldy.service.QuestionService;
 import com.ldy.service.SensitiveService;
-import com.ldy.service.UserService;
 import com.ldy.utils.WendaUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.util.HtmlUtils;
 
 import java.util.Date;
 
@@ -25,12 +23,13 @@ public class CommentController {
 
     @Autowired
     private HostHolder hostHolder;
-    @Autowired
-    private UserService userService;
+
     @Autowired
     private CommentService commentService;
+
     @Autowired
     private QuestionService questionService;
+
     @Autowired
     private SensitiveService sensitiveService;
 
@@ -47,7 +46,7 @@ public class CommentController {
             comment.setContent(content);
             comment.setEntityId(questionId);
             comment.setEntityType(EntityType.ENTITY_QUESTION);
-            comment.setCreateDate(new Date());
+            comment.setCreatedDate(new Date());
             comment.setStatus(0);
 
             commentService.addComment(comment);

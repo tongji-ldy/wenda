@@ -2,6 +2,9 @@ package com.ldy.model;
 
 import java.util.Date;
 
+/**
+ * 存储登录ticket信息，放在cookie中
+ */
 public class LoginTicket {
     private int id;
     private int userId;

@@ -47,6 +47,7 @@ public class PassportInterceptor implements HandlerInterceptor {
         }
         if (ticket != null) {
             LoginTicket loginTicket = loginTicketDAO.selectByTicket(ticket);  //??????为什么数据库读的数据不对？？
+            loginTicket.getUserId();
             if (loginTicket == null || loginTicket.getExpired().before(new Date()) || loginTicket.getStatus() != 0) {//不存在或者过期或状态不为0
                 return true;
             }

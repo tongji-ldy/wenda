@@ -3,7 +3,7 @@ package com.ldy.model;
 import org.springframework.stereotype.Component;
 
 /**
- * 使后台都可以通过IOC访问登录用户信息，用于拦截器中
+ * 存的是当前登录的用户。使后台都可以通过IOC访问登录用户信息，用于拦截器中等
  */
 @Component
 public class HostHolder {

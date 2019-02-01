@@ -12,6 +12,7 @@ import java.util.List;
 public class CommentService {
     @Autowired
     private CommentDAO commentDAO;
+
     @Autowired
     private SensitiveService sensitiveService;
 
@@ -20,9 +21,9 @@ public class CommentService {
     }
 
     public int addComment(Comment comment) {
-        comment.setContent(HtmlUtils.htmlEscape(comment.getContent()));
-        comment.setContent(sensitiveService.filter(comment.getContent()));
-        return commentDAO.addComment(comment) > 0 ? comment.getId() : 0;
+        comment.setContent(HtmlUtils.htmlEscape(comment.getContent()));//HTML标签过滤
+        comment.setContent(sensitiveService.filter(comment.getContent()));//敏感词过滤
+        return commentDAO.addComment(comment) > 0 ? comment.getId() : 0;//添加成功则返回评论的id
     }
 
     public int getCommentCount(int entityId, int entityType) {
@@ -30,8 +31,7 @@ public class CommentService {
     }
 
     public boolean deleteComment(int commentId) {
-        // 状态为1则表示被逻辑删除
-        return commentDAO.updateStatus(commentId, 1) > 0;
+        return commentDAO.updateStatus(commentId, 1) > 0;// 状态为1则表示被逻辑删除
     }
 
     public Comment getCommentById(int id) {

@@ -23,6 +23,11 @@ public class LikeController {
     @Autowired
     private  CommentService commentService;
 
+    /**
+     * 点击赞按钮后触发
+     * @param commentId
+     * @return
+     */
     @RequestMapping(path = {"/like"}, method = {RequestMethod.POST})
     @ResponseBody
     public String like(@RequestParam("commentId") int commentId) {
@@ -46,7 +51,6 @@ public class LikeController {
 
 
 }
-
 
 
 

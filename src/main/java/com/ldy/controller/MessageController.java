@@ -23,6 +23,8 @@ import java.util.List;
 
 @Controller
 public class MessageController {
+    private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
+
     @Autowired
     HostHolder hostHolder;
 
@@ -32,8 +34,11 @@ public class MessageController {
     @Autowired
     UserService userService;
 
-    private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
-
+    /**
+     * 站内信列表
+     * @param model
+     * @return
+     */
     @RequestMapping(path = {"/msg/list"}, method = {RequestMethod.GET})
     public String getConversationList(Model model) {
         if (hostHolder.getUser() == null) {
@@ -54,6 +59,12 @@ public class MessageController {
         return "letter";
     }
 
+    /**
+     * 站内信细节
+     * @param model
+     * @param conversationId
+     * @return
+     */
     @RequestMapping(path = {"/msg/detail"}, method = {RequestMethod.GET})
     public String getConversationDetail(Model model, @RequestParam("conversationId") String conversationId) {
         try {
@@ -69,9 +80,17 @@ public class MessageController {
         } catch (Exception e) {
             logger.error("获取详情失败" + e.getMessage());
         }
+        // 这里还应该把数据库里面会话的阅读状态设置为已经阅读,也就是has_read修改为1
+        messageService.updateMessageReadStatus(conversationId);
         return "letterDetail";
     }
 
+    /**
+     * 发送消息
+     * @param toName
+     * @param content
+     * @return
+     */
     @RequestMapping(path = {"/msg/addMessage"}, method = {RequestMethod.POST})
     @ResponseBody
     public String addMessage(@RequestParam("toName") String toName,

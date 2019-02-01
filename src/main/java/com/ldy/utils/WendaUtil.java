@@ -8,7 +8,7 @@ import java.security.MessageDigest;
 import java.util.Map;
 
 /**
- * MD5加密工具
+ * MD5加密及json工具
  */
 public class WendaUtil {
     private static final Logger logger = LoggerFactory.getLogger(WendaUtil.class);

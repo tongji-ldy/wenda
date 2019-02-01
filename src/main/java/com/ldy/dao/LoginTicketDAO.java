@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface LoginTicketDAO {
     String TABLE_NAME = " login_ticket ";
     String INSERT_FIELDS = " user_id, expired, status, ticket ";
-    String SELECT_FIELDS = " id " + INSERT_FIELDS;
+    String SELECT_FIELDS = " id, " + INSERT_FIELDS;
 
 
     @Insert({"insert into", TABLE_NAME, "(", INSERT_FIELDS, ") values(#{userId},#{expired},#{status},#{ticket})"})

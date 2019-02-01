@@ -14,7 +14,7 @@ import java.util.Date;
  * AOP实例
  */
 @Aspect
-@Component//与@service类似
+@Component
 public class LogAspect {
     private static final Logger logger = LoggerFactory.getLogger(LogAspect.class);
 

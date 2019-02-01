@@ -15,6 +15,12 @@ public class RedisKeyUtil {
     // 关注的对象
     private static String BIZ_FOLOWEE = "FOLLOWEE";
 
+    /**
+     * 根据事务创建一个likeKey名
+     * @param entityType
+     * @param entityId
+     * @return
+     */
     public static String getLikeKey(int entityType, int entityId) {
         return BIZ_LIKE + SPLIT + String.valueOf(entityType) + SPLIT + String.valueOf(entityId);
     }

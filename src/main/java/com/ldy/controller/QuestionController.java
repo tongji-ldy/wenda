@@ -38,6 +38,12 @@ public class QuestionController {
     @Autowired
     LikeService likeService;
 
+    /**
+     * 增加问题
+     * @param title
+     * @param content
+     * @return
+     */
     @RequestMapping(value = "/question/add", method = {RequestMethod.POST})
     @ResponseBody
     public String addQuestion(@RequestParam("title") String title,
@@ -64,6 +70,12 @@ public class QuestionController {
         return WendaUtil.getJSONString(1, "失败");
     }
 
+    /**
+     * 问题细节
+     * @param model
+     * @param qid
+     * @return
+     */
     @RequestMapping(value = "/question/{qid}", method = {RequestMethod.GET})
     public String questionDetail(Model model, @PathVariable("qid") int qid) {
         Question question = questionService.getById(qid);

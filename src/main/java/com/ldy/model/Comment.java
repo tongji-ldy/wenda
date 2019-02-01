@@ -9,19 +9,9 @@ public class Comment {
     private int entityType;//实体类型
     private String content;
     private Date createdDate;
-    private int status; // 在数据库里面默认0就是有效的,1是被逻辑删除的
+    private int status; //在数据库里面默认0就是有效的,1是被逻辑删除的
 
     public Comment() {
-    }
-
-    public Comment(int id, int userId, int entityId, int entityType, String content, Date createDate, int status) {
-        this.id = id;
-        this.userId = userId;
-        this.entityId = entityId;
-        this.entityType = entityType;
-        this.content = content;
-        this.createdDate = createDate;
-        this.status = status;
     }
 
     public int getId() {
@@ -64,11 +54,11 @@ public class Comment {
         this.content = content;
     }
 
-    public Date getCreateDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreatedDate(Date createDate) {
         this.createdDate = createDate;
     }
 

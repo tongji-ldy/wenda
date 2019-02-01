@@ -1,5 +1,8 @@
 package com.ldy.model;
 
+/**
+ * comment中的事务种类
+ */
 public class EntityType {
     public static int ENTITY_QUESTION = 1;
     public static int ENTITY_COMMENT = 2;

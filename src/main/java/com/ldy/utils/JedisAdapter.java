@@ -177,6 +177,12 @@ public class JedisAdapter implements InitializingBean {
         jedisPool = new JedisPool("redis://localhost:6379/10");
     }
 
+    /**
+     * 将点赞的用户id存放在名为key的set中
+     * @param key
+     * @param value
+     * @return
+     */
     public long sadd(String key, String value) {
         Jedis jedis = null;
         try {
