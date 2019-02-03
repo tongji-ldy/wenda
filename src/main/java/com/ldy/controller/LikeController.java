@@ -1,5 +1,9 @@
 package com.ldy.controller;
 
+import com.ldy.async.EventModel;
+import com.ldy.async.EventProducer;
+import com.ldy.async.EventType;
+import com.ldy.model.Comment;
 import com.ldy.model.EntityType;
 import com.ldy.model.HostHolder;
 import com.ldy.service.CommentService;
@@ -23,6 +27,9 @@ public class LikeController {
     @Autowired
     private  CommentService commentService;
 
+    @Autowired
+    private  EventProducer eventProducer;
+
     /**
      * 点击赞按钮后触发
      * @param commentId
@@ -34,6 +41,12 @@ public class LikeController {
         if (hostHolder.getUser() == null) {
             return WendaUtil.getJSONString(999);//999表示没登录
         }
+
+        Comment comment = commentService.getCommentById(commentId);
+        eventProducer.fireEvent(new EventModel(EventType.LIKE)
+                .setActorId(hostHolder.getUser().getId()).setEntityId(commentId)
+                .setEntityType(EntityType.ENTITY_COMMENT)
+                .setEntityOwnerId(comment.getUserId()).setExt("questionId", String.valueOf(comment.getEntityId())));
 
         long likeCount = likeService.like(hostHolder.getUser().getId(), EntityType.ENTITY_COMMENT, commentId);
         return WendaUtil.getJSONString(0, String.valueOf(likeCount));

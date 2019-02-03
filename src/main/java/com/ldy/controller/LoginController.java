@@ -1,5 +1,8 @@
 package com.ldy.controller;
 
+import com.ldy.async.EventModel;
+import com.ldy.async.EventProducer;
+import com.ldy.async.EventType;
 import com.ldy.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -23,8 +26,12 @@ public class LoginController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    private EventProducer eventProducer;
+
     /**
      * 跳转到登录注册界面
+     *
      * @param model
      * @param next
      * @return
@@ -37,6 +44,7 @@ public class LoginController {
 
     /**
      * 注册
+     *
      * @param model
      * @param username
      * @param password
@@ -73,6 +81,7 @@ public class LoginController {
 
     /**
      * 登录
+     *
      * @param model
      * @param username
      * @param password
@@ -87,13 +96,20 @@ public class LoginController {
                         @RequestParam("password") String password,
                         @RequestParam(value = "next", required = false) String next,
                         @RequestParam(value = "rememberme", defaultValue = "false") boolean remeberme,
-                        HttpServletResponse response){
+                        HttpServletResponse response) {
         try {
-            Map<String, String> map = userService.login(username, password);
+            Map<String, Object> map = userService.login(username, password);
             if (map.containsKey("ticket")) {
-                Cookie cookie = new Cookie("ticket", map.get("ticket"));
+                Cookie cookie = new Cookie("ticket", map.get("ticket").toString());
                 cookie.setPath("/");
                 response.addCookie(cookie);
+
+                // 发送邮件事件,这里由于个别原因暂时注释,首先这里的邮件地址是需要根据用户的邮箱来进行发送的,这里固定了所以不合适
+                /*eventProducer.fireEvent(new EventModel(EventType.LOGIN)
+                        .setExt("username", username)
+                        .setExt("email", "ldy_job@163.com")
+                        .setActorId((int) map.get("userId")));*/
+
                 if (StringUtils.isNotBlank(next)) {
                     return "redirect:" + next;
                 }
@@ -111,6 +127,7 @@ public class LoginController {
 
     /**
      * 登出
+     *
      * @param ticket
      * @return
      */
