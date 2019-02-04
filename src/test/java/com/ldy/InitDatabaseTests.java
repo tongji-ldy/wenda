@@ -2,8 +2,10 @@ package com.ldy;
 
 import com.ldy.dao.QuestionDAO;
 import com.ldy.dao.UserDAO;
+import com.ldy.model.EntityType;
 import com.ldy.model.Question;
 import com.ldy.model.User;
+import com.ldy.service.FollowService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +27,9 @@ public class InitDatabaseTests {
     @Autowired
     QuestionDAO questionDAO;
 
+    @Autowired
+    FollowService followService;
+
     @Test
     public void initDatabase() {
         Random random = new Random();
@@ -36,6 +41,11 @@ public class InitDatabaseTests {
             user.setPassword("");
             user.setSalt("");
             userDAO.addUser(user);
+
+            //互相关注
+            for (int j = 1; j < i; ++j) {
+                followService.follow(j, EntityType.ENTITY_USER, i);
+            }
 
             user.setPassword("xxx");
             userDAO.updatePassword(user);

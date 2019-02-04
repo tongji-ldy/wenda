@@ -1,7 +1,8 @@
 package com.ldy.controller;
 
-import com.ldy.model.Question;
-import com.ldy.model.ViewObject;
+import com.ldy.model.*;
+import com.ldy.service.CommentService;
+import com.ldy.service.FollowService;
 import com.ldy.service.QuestionService;
 import com.ldy.service.UserService;
 import org.slf4j.Logger;
@@ -24,10 +25,19 @@ public class HomeController {
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
     @Autowired
-    private UserService userService;
+    QuestionService questionService;
 
     @Autowired
-    private QuestionService questionService;
+    UserService userService;
+
+    @Autowired
+    FollowService followService;
+
+    @Autowired
+    CommentService commentService;
+
+    @Autowired
+    HostHolder hostHolder;
 
     /**
      * 从首页question中跳转到相关user页面
@@ -39,7 +49,20 @@ public class HomeController {
     @RequestMapping(path = {"/user/{userId}"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String userIndex(Model model, @PathVariable("userId") int userId) {
         model.addAttribute("vos", getQuestions(userId, 0, 10));
-        return "index";
+
+        User user = userService.getUser(userId);
+        ViewObject vo = new ViewObject();
+        vo.set("user", user);
+        vo.set("commentCount", commentService.getUserCommentCount(userId));
+        vo.set("followerCount", followService.getFollowerCount(EntityType.ENTITY_USER, userId));
+        vo.set("followeeCount", followService.getFolloweeCount(userId, EntityType.ENTITY_USER));
+        if (hostHolder.getUser() != null) {
+            vo.set("followed", followService.isFollower(hostHolder.getUser().getId(), EntityType.ENTITY_USER, userId));
+        } else {
+            vo.set("followed", false);
+        }
+        model.addAttribute("profileUser", vo);
+        return "profile";
     }
 
     /**
@@ -68,6 +91,7 @@ public class HomeController {
         for (Question question : questionList) {
             ViewObject vo = new ViewObject();
             vo.set("question", question);
+            vo.set("followCount", followService.getFollowerCount(EntityType.ENTITY_USER, userId));
             vo.set("user", userService.getUser(question.getUserId()));
             vos.add(vo);
         }
