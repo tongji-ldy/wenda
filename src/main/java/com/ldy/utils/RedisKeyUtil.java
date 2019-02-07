@@ -56,7 +56,7 @@ public class RedisKeyUtil {
     }
 
 
-    public static String getTImeline(int userId) {
+    public static String getTimeline(int userId) {
         return BIZ_TIMELINE + SPLIT + String.valueOf(userId);
     }
 

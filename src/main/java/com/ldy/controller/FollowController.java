@@ -22,24 +22,24 @@ import java.util.Map;
 @Controller
 public class FollowController {
     @Autowired
-    private  FollowService followService;
+    private FollowService followService;
 
     @Autowired
-    private  CommentService commentService;
+    private CommentService commentService;
 
     @Autowired
-    private  QuestionService questionService;
+    private QuestionService questionService;
 
     @Autowired
-    private  UserService userService;
+    private UserService userService;
 
     @Autowired
-    private  HostHolder hostHolder;
+    private HostHolder hostHolder;
 
     @Autowired
-    private  EventProducer eventProducer;
+    private EventProducer eventProducer;
 
-    @RequestMapping(path = "/followUser", method = {RequestMethod.POST,RequestMethod.GET})
+    @RequestMapping(path = "/followUser", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public String followUser(@RequestParam("userId") int userId) {
         if (hostHolder.getUser() == null) {
@@ -89,7 +89,7 @@ public class FollowController {
             return WendaUtil.getJSONString(1, "问题不存在");
         }
 
-        int userId=hostHolder.getUser().getId();
+        int userId = hostHolder.getUser().getId();
         boolean ret = followService.follow(userId, EntityType.ENTITY_QUESTION, questionId);
 
         // 提交到异步队列
@@ -134,6 +134,7 @@ public class FollowController {
 
     /**
      * 取出要显示的followers
+     *
      * @param model
      * @param userid
      * @return
@@ -154,13 +155,14 @@ public class FollowController {
 
     /**
      * 取出要显示的followees
+     *
      * @param model
      * @param userId
      * @return
      */
     @RequestMapping(path = {"/user/{uid}/followees"}, method = {RequestMethod.GET})
-    public String followees(Model model,@PathVariable("uid") int userId) {
-        List<Integer> followeeIds = followService.getFollowees(userId, EntityType.ENTITY_USER,0,10);
+    public String followees(Model model, @PathVariable("uid") int userId) {
+        List<Integer> followeeIds = followService.getFollowees(userId, EntityType.ENTITY_USER, 0, 10);
 
         if (hostHolder.getUser() != null) {
             model.addAttribute("followees", getUsersInfo(hostHolder.getUser().getId(), followeeIds));
