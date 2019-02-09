@@ -1,10 +1,7 @@
 package com.ldy.controller;
 
 import com.ldy.model.*;
-import com.ldy.service.CommentService;
-import com.ldy.service.LikeService;
-import com.ldy.service.QuestionService;
-import com.ldy.service.UserService;
+import com.ldy.service.*;
 import com.ldy.utils.WendaUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +35,12 @@ public class QuestionController {
     @Autowired
     LikeService likeService;
 
+    @Autowired
+    FollowService followService;
+
     /**
      * 增加问题
+     *
      * @param title
      * @param content
      * @return
@@ -72,6 +73,7 @@ public class QuestionController {
 
     /**
      * 问题细节
+     *
      * @param model
      * @param qid
      * @return
@@ -97,6 +99,27 @@ public class QuestionController {
             comments.add(vo);
         }
         model.addAttribute("comments", comments);
+
+        ArrayList<ViewObject> followUsers = new ArrayList<>();
+        // 获取关注用户信息
+        List<Integer> users = followService.getFollowers(EntityType.ENTITY_QUESTION, qid, 20);
+        for (Integer userId : users) {
+            ViewObject vo = new ViewObject();
+            User user = userService.getUser(userId);
+            if (user == null) {
+                continue;
+            }
+            vo.set("name", user.getName());
+            vo.set("headUrl", user.getHeadUrl());
+            vo.set("id", user.getId());
+            followUsers.add(vo);
+        }
+        model.addAttribute("followUsers", followUsers);
+        if (hostHolder.getUser() != null) {
+            model.addAttribute("followed", followService.isFollower(hostHolder.getUser().getId(), EntityType.ENTITY_QUESTION, qid));
+        } else {
+            model.addAttribute("followed", false);
+        }
         return "detail";
     }
 }
