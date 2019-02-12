@@ -1,5 +1,8 @@
 package com.ldy.controller;
 
+import com.ldy.async.EventModel;
+import com.ldy.async.EventProducer;
+import com.ldy.async.EventType;
 import com.ldy.model.*;
 import com.ldy.service.*;
 import com.ldy.utils.WendaUtil;
@@ -38,6 +41,9 @@ public class QuestionController {
     @Autowired
     FollowService followService;
 
+    @Autowired
+    EventProducer eventProducer;
+
     /**
      * 增加问题
      *
@@ -63,6 +69,9 @@ public class QuestionController {
                 question.setUserId(hostHolder.getUser().getId());
             }
             if (questionService.addQuestion(question) > 0) {
+                eventProducer.fireEvent(new EventModel(EventType.ADD_QUESTION)
+                        .setActorId(question.getUserId()).setEntityId(question.getId())
+                        .setExt("title", question.getTitle()).setExt("content", question.getContent()));
                 return WendaUtil.getJSONString(0);
             }
         } catch (Exception e) {
